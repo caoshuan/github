@@ -8,24 +8,18 @@
         header("Location:/login.php");
         exit; 
     }
+    require HEART_PATH."sql.class.php";
     $title=$_POST['title'];
     $body =$_POST['body'];
     $arraytitle=array();
     $arraybody=array();
-    if(isset($_POST["create"])) echo "$";
-    $con=mysqli_connect("localhost","root","1");
-    if(!$con)
-    {
-        die("Could not connect:".mysqli_connect_error());
-    }
-
-    mysqli_select_db($con,"my_db");
-    
+    $sql=new sql;
+    $con=$sql->connectsql(DB_HOST,DB_USER,DB_PWD,DB_NAME);echo 11111;
     if(isset($_POST["create"]))
     {
         //查询数据库，若存在则返回提示信息
         $select="select * from articles where title='$title'";
-        $selectresult=mysqli_query($con,$select);
+        $selectresult=$sql->querysql($select,$con);
         if(!$selectresult) $_SESSION['remindmessage']="查询失败!";
         if(!mysqli_num_rows($selectresult)) 
         {
